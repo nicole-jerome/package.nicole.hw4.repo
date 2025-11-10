@@ -17,4 +17,5 @@ hello <- function() {
   print("Hello, world!")
 }
 
+#I am adding this comment so I can recommit my work and check that its going to GitHub
 system("git remote add origin https://github.com/nicole-jerome/package.nicole.hw4.repo.git")
