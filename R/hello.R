@@ -1,3 +1,16 @@
+#' Hello World Function
+#'
+#' This function returns the phrase 'Hello, world!'.
+#'
+#' @param x Any input given
+#' @return NULL, prints the statement 'Hello, world!'
+#' @examples
+#' hello(x)
+#' @export
+hello <- function(x) {
+  print("Hello, world!")
+}
+
 # Hello, world!
 #
 # This is an example function named 'hello'
@@ -13,9 +26,4 @@
 #   Check Package:             'Ctrl + Shift + E'
 #   Test Package:              'Ctrl + Shift + T'
 
-hello <- function() {
-  print("Hello, world!")
-}
 
-#I am adding this comment so I can recommit my work and check that its going to GitHub
-system("git remote add origin https://github.com/nicole-jerome/package.nicole.hw4.repo.git")
