@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 # package.nicole.hw4
 
 <!-- badges: start -->
+[![R-CMD-check](https://github.com/nicole-jerome/package.nicole.hw4.repo/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/nicole-jerome/package.nicole.hw4.repo/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 The goal of package.nicole.hw4 is to ...
