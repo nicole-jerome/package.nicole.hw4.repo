@@ -19,6 +19,6 @@ knitr::opts_chunk$set(
  This vingette will show you show to use the print_function call within package.nicole.hw4
  
 ```{r setup, include=FALSE}
-devtools::load_all()
+ library(package.nicole.hw4)
 ```
 
