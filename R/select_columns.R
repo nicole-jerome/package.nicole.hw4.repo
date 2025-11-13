@@ -5,7 +5,7 @@
 #' @param df The input object given by the user. It is expected to be a data.frame.
 #' @param columns A character or numeric vector specifying which columns to include or exclude. If a value is negative, that column will be dropped instead of kept. Columns must exist in \code{df}.
 #'
-#' @return A filtered data.frame that contains only the specified columns, in the order of the original data.frame.
+#' @return A filtered data.frame that contains only the specified columns, with the order of the columns being equivalent to the original data.frame (besides dropped columns).
 #'
 #' @examples
 #' # Select columns by name
@@ -13,6 +13,12 @@
 #'
 #' # Select columns by index
 #' select_columns(mtcars, c(1,5))
+#'
+#' # Exclude columns by name
+#' select_columns(mtcars, -c("mpg", "hp"))
+#'
+#' #Exclude columns by index
+#' select_columns(mtcars, -c(1,2))
 #'
 #' # Attempting to select a non-existent column triggers an error
 #' \dontrun{
@@ -29,27 +35,44 @@ select_columns = function(df, columns) {
     stop("You must specify at least one column name or index.", call. = F)
   }
 
+  #detect an exclusion case
+  exclude = F
+
+  #if column is numeric and negative, exclude it
+  if (is.numeric(columns) && all(columns < 0)) {
+    exclude <- TRUE
+    columns <- abs(columns)
+  }
+
+  #if column is character and first element is "-", exclude it
+  if (is.character(columns) && grepl("^-", columns[1])) {
+    exclude <- TRUE
+    columns <- sub("^-", "", columns)
+  }
+
   #if columns are numeric indices, ensure they are within a valid range of the df provided
+  #if columns are character elements, ensure that they exist
   if (is.numeric(columns)) {
     if (any(columns < 1 | columns > ncol(df))) {
       stop("Column indices are out of range. Data frame has ", ncol(df), " columns.", call. = F)
         }
-  }
-
-  #if columns are character names, ensure they exist in df
-  if (is.character(columns)) {
+  } else if (is.character(columns)) {
     missing_columns = setdiff(columns, names(df))
-    if length(missing_columns > 0){
-      stop("The following columns do not exist in the data frame: ",
+    if (length(missing_columns) > 0) {
+      stop("The following columns do not exist in the data frame:",
            paste(missing_columns, collapse = ", "), call. = F)
     }
   }
 
-  #perform the column selection
-  selected_df = df[, columns, drop = F]
-
-  #nice return message
-  message("Selected ", ncol(selected_df), " of ", ncol(df), " columns.")
+  #perform the column selection (inclusion or exclusion)
+  if (exclude) {
+    selected_df <- df[, setdiff(names(df), columns), drop = FALSE]
+    message("Excluded ", length(columns), " column(s). Remaining: ",
+            ncol(selected_df), ".")
+  } else {
+    selected_df <- df[, columns, drop = FALSE]
+    message("Selected ", ncol(selected_df), " of ", ncol(df), " columns.")
+  }
 
   return(selected_df)
 }
