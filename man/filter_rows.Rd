@@ -15,7 +15,7 @@ filter_rows(df, condition)
 A filtered data.frame containing only the rows where the condition is TRUE.
 }
 \description{
-This function returns rows of a data.frame that satisfy a logical condition. It is a simplified version of dplyr::filter() that is written in base R.
+This function returns a data.frame containing rows that satisfy a logical condition. It is a simplified version of dplyr::filter() that is written in base R.
 }
 \examples{
 #Keep only cars with mpg > 20

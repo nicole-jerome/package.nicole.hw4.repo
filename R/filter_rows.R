@@ -1,6 +1,6 @@
 #' filter_rows
 #'
-#' This function returns rows of a data.frame that satisfy a logical condition. It is a simplified version of dplyr::filter() that is written in base R.
+#' This function returns a data.frame containing rows that satisfy a logical condition. It is a simplified version of dplyr::filter() that is written in base R.
 #'
 #' @param df The input object given by the user. It is expected to be a data.frame.
 #' @param condition A logical expression evaluated in the context of \code{df}. Logical conditions can be strung together by & or |.
@@ -28,7 +28,7 @@ filter_rows = function(df, condition) {
   if (!is.logical(eval_condition) ||
       length(eval_condition) != n_total) {
     stop("Condition must evaluate to a logical vector of length equal to nrow(df).",
-         call. = FALSE)
+         call. = F)
   }
 
   #perform the subsetting

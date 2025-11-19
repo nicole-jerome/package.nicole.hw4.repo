@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 # Introduction
  
- This vingette will show you show to use the filter_rows() call within package.nicole.hw4
+ This vingette will show you how to use the filter_rows() call within package.nicole.hw4
  
 ```{r setup, include=FALSE}
  library(package.nicole.hw4)
