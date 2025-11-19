@@ -74,10 +74,10 @@ select_columns = function(df, columns = NULL, exclude = NULL) {
     if (is.numeric(exclude)) {
       if (any(exclude < 1 | exclude > ncol(df))) {
         stop("Given 'exclude' indices out of range. Data frame has ",
-             ncol(df), " columns.", call. = FALSE)
+             ncol(df), " columns.", call. = F)
       }
       keep <- setdiff(seq_len(ncol(df)), exclude)
-      return(df[, keep, drop = FALSE])
+      return(df[, keep, drop = F])
     }
 
     #character exclusion
@@ -86,12 +86,12 @@ select_columns = function(df, columns = NULL, exclude = NULL) {
       if (length(missing_cols) > 0) {
         stop("The following columns do not exist in the data frame: ",
              paste(missing_cols, collapse = ", "),
-             call. = FALSE)
+             call. = F)
       }
       keep <- setdiff(names(df), exclude)
-      return(df[, keep, drop = FALSE])
+      return(df[, keep, drop = F])
     }
 
-    stop("'exclude' must be numeric or character.", call. = FALSE)
+    stop("'exclude' must be numeric or character.", call. = F)
   }
 }
