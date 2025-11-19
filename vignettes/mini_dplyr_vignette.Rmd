@@ -1,8 +1,8 @@
 ---
-title: "my_first_vignette"
+title: "mini_dplyr_vignette"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{my_first_vignette}
+  %\VignetteIndexEntry{mini_dplyr_vignette}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -16,11 +16,145 @@ knitr::opts_chunk$set(
 
 # Introduction
  
- This vingette will show you how to use the filter_rows() call within package.nicole.hw4
- 
-```{r setup, include=FALSE}
- library(package.nicole.hw4)
+The package.nicole.hw4 package provides simple tools for data
+manipulation using only base R. It aims to replicate tidyverse::dplyr.
 
+It includes two main functions:
 
+`filter_rows()` — subsets rows of data frames by logical conditions
+
+`select_columns()` — subsets data frames by including or excluding specific columns
+
+A third function, `df_check()`, is used internally to ensure that inputs
+are valid data frames.
+
+This vignette demonstrates how to apply these functions using the built-in
+mtcars dataset.
+
+<br>
+
+# The mtcars dataset
+
+mtcars is one of R's built-in datasets. It contains a row names index that indicate's the car's make/model, 11 columns of data, and 32 observations (rows). 
+
+ Lets view the first few rows:
+```{r setup}
+head(mtcars)
+```
+We will use this dataset to illustrate the use of the `filter_rows()` and `select_columns()` functions. 
+
+<br>
+
+# Filtering rows with `filter_rows()`
+
+The `filter_rows()` function allows users to subset a data frame based on a logical condition.
+The condition is evaluated within the data frame, so column names can be used directly.
+
+## Example 1: Keep cars with mpg > 20
+```{r}
+library(package.nicole.hw4)
+
+filter_rows(mtcars, mpg > 20)
 ```
 
+This returns only the cars whose miles per gallon (mpg) exceed 20.
+<br>
+
+## Example 2: Keep cars with < 6 cylinders
+```{r}
+filter_rows(mtcars, cyl < 6)
+```
+
+This returns only the cars that have less than 6 cylinders.
+<br>
+
+## Example 3: Combining mulitple conditions
+You can combine logical expressions using &, |, and !.
+
+Example:
+Cars with mpg > 20 and < 6 cylinders:
+```{r}
+filter_rows(mtcars, mpg > 20 & cyl < 6)
+```
+
+This returns only the cars with over 20 mpg AND less than 6 cylinders.
+
+<br>
+
+# Selecting columns with `select_columns()`
+
+The `select_columns()` function allows users to subset a data frame by providing columns to either include or exclude. Selecting columns by name and index are both supported. 
+
+The `columns` argument indicates columns to include, whereas the `exclude` argument indicates columns to exclude. `select_columns()` only handles input into either `columns` or `exclude`, not both.
+
+## Example 1: Select columns to keep by name
+```{r}
+select_columns(mtcars, columns = c("mpg", "hp", "wt"))
+```
+
+This returns only the columns mpg, hp, and wt, and discards the other 8.
+<br>
+
+## Example 2: Select columns to keep by index
+```{r}
+select_columns(mtcars, columns = c(1, 4, 6))
+```
+
+This returns the same columns as example 1, but calls them by index rather than name. 
+<br>
+
+## Example 3: Exclude columns by name
+```{r}
+select_columns(mtcars, exclude = c("cyl", "disp", "drat", "qsec", "vs", "am", "gear", "carb"))
+```
+
+This returns the same columns as example 1, but uses column names to indicate which columns to exclude.
+<br>
+
+## Example 4: Exclude columns by index
+```{r}
+select_columns(mtcars, exclude = c(2, 3, 5, 7, 8, 9, 10, 11))
+```
+
+This returns the same columns as example 1, but uses indices to indicate which columns to exclude. 
+
+<br>
+
+# Combining filtering and selecting
+
+Because both functions return a regular data frame, they can be chained (sequentially) using standard R syntax.
+For example:
+```{r}
+result <- filter_rows(mtcars, mpg > 25)
+select_columns(result, columns = c("mpg", "cyl", "wt"))
+```
+
+Or, functions can be combined in a single line.
+For example:
+```{r}
+select_columns(
+  filter_rows(mtcars, mpg > 25),
+  columns = c("mpg", "cyl", "wt")
+  )
+```
+
+<br>
+
+# Internal helper: `df_check()`
+Although not exported, the package uses a helper function called `df_check()` to validate that the user input is a data frame. This ensures that meaningful error messages are returned if the input is invalid.
+
+<br>
+
+# Summary
+
+The package.nicole.hw4 package provides:
+
+ - A simple and intuitive row filtering function: `filter_rows()`
+ 
+ - A flexible column inclusion/exclusion function: `select_columns()`
+ 
+ - Validation of input data and clean error handling through `df_check`
+ 
+ 
+These functions mimic the basic features of `dplyr` but are built in base R -- keeping them simple, lightweight, and easy to understand. package.nicole.hw4 is a useful tool for manipulating data intuitively. Happy data manipulating!
+ 
