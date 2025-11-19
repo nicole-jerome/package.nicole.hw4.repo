@@ -1,6 +1,6 @@
 #' filter_rows
 #'
-#' This function returns rows of a data.frame that satisfy a logical condition. It is a simplified version of dplyr::filter().
+#' This function returns rows of a data.frame that satisfy a logical condition. It is a simplified version of dplyr::filter() that is written in base R.
 #'
 #' @param df The input object given by the user. It is expected to be a data.frame.
 #' @param condition A logical expression evaluated in the context of \code{df}. Logical conditions can be strung together by & or |.
@@ -9,6 +9,9 @@
 #' @examples
 #' #Keep only cars with mpg > 20
 #' filter_rows(mtcars, mpg > 20)
+#'
+#' #Keep only cars with mpg > 20 and cyl < 6
+#' filter_rows(mtcars, mpg > 20 & cyl < 6)
 #'
 #' @export
 filter_rows = function(df, condition) {

@@ -10,7 +10,14 @@
 coverage](https://codecov.io/gh/nicole-jerome/package.nicole.hw4.repo/graph/badge.svg)](https://app.codecov.io/gh/nicole-jerome/package.nicole.hw4.repo)
 <!-- badges: end -->
 
-The goal of package.nicole.hw4 is to …
+## Overview
+
+The goal of package.nicole.hw4 is to recreate a mini version of
+tidyverse’s dplyr. However, this package is written using base R
+commands. package.nicole.hw4 contains two functions. “filter_rows()” is
+similar to dplyr::filter(), and “select_columns()” is similar to
+dplyr::select(). This package was developed as a homework assignment for
+BIOSTAT625 at the University of Michigan. Go Blue!
 
 ## Installation
 
@@ -22,36 +29,35 @@ You can install the development version of package.nicole.hw4 from
 pak::pak("nicole-jerome/package.nicole.hw4.repo")
 ```
 
-## Example
+## Example Usage
 
-This is a basic example which shows you how to solve a common problem:
+This example outlines the functionality of filter_rows():
 
 ``` r
+#delete when publishing
 devtools::load_all()
 #> ℹ Loading package.nicole.hw4
-## basic example code
+
+#instead load this (uncomment following line with publishing)
+#library(package.nicole.hw4)
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
+This example outlines the functionality of select_columns():
 
 ``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
+#delete when publishing
+devtools::load_all()
+#> ℹ Loading package.nicole.hw4
+
+#instead load this (uncomment following line with publishing)
+#library(package.nicole.hw4)
 ```
 
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date. `devtools::build_readme()` is handy for this.
+## Getting Help
 
-You can also embed plots, for example:
-
-<img src="man/figures/README-pressure-1.png" width="100%" />
-
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub and CRAN.
+Help documentation is included for all functions, and the package
+vignette displays example use cases. The main place to suggest
+improvements and bug fixes with package.nicole.hw4 is via GitHub pull
+requests. Alternatively, you may reach out to the developer directly,
+Nicole Jerome, at <ndea@umich.edu> - please allow two business days for
+response time.
