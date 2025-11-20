@@ -197,11 +197,11 @@ Since `all.equal()` returns `TRUE`, `select_columns()` and `dplyr::select()` pro
 ## Efficiency comparison: `filter_rows()` vs `dplyr::filter()`
 Though base R commands are generally useful, `dplyr` is highly optimized by using C++ code. This benchmarking will give a sense of how `package.nicole.hw4` compares to `dplyr`. 
 ```{r}
-bench::mark(
+if (requireNamespace("bench", quietly = TRUE)) {bench::mark(
   my_filter = suppressMessages(filter_rows(mtcars, mpg > 20)),
   dplyr_filter = dplyr::filter(mtcars, mpg > 20),
   check = F
-)
+)}
 ```
 
 In the case of a very small dataset like `mtcars`, the `filter_rows()` function dominates in terms of speed because `filter_rows` is very simple and `dpylr`'s overhead is very large. However, in the case of larger datasets, `dplyr` will outperform `filter_rows()` given its C++ optimization and vectorized operation.  
@@ -211,11 +211,11 @@ In the case of a very small dataset like `mtcars`, the `filter_rows()` function 
 ## Efficiency comparison: `select_columns` vs `dplyr::select()`
 With the same rationale as above, lets compare the second set of functions.
 ```{r}
-bench::mark(
+if (requireNamespace("bench", quietly = TRUE)) {bench::mark(
   my_select = suppressMessages(select_columns(mtcars, columns = c("mpg", "hp", "wt"))),
   dplyr_select = dplyr::select(mtcars, mpg, hp, wt),
   check = F
-  )
+  )}
 ```
 
 Similar to the above example in terms of speed and memory, `select_columns` outperforms `dplyr` on this very small dataset, though `dplyr` would perform better on larger datasets.
