@@ -89,3 +89,18 @@ test_that("select_columns runs without message when suppressed", {
     suppressMessages(select_columns(mtcars, columns = 1))
   )
 })
+
+test_that("invalid type for 'columns' triggers error", {
+  # e.g., columns = TRUE (logical)
+  expect_error(
+    select_columns(mtcars, columns = TRUE),
+    "'columns' must be numeric or character"
+  )
+})
+
+test_that("invalid type for 'exclude' triggers error", {
+  expect_error(
+    select_columns(mtcars, exclude = TRUE),
+    "'exclude' must be numeric or character"
+  )
+})
