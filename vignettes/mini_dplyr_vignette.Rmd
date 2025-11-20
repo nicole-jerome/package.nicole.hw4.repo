@@ -15,9 +15,8 @@ knitr::opts_chunk$set(
 ```
 
 # Introduction
- 
-The package.nicole.hw4 package provides simple tools for data
-manipulation using only base R. It aims to replicate tidyverse::dplyr.
+ The `package.nicole.hw4` package provides simple tools for data
+manipulation using only base R. It aims to replicate `tidyverse::dplyr`.
 
 It includes two main functions:
 
@@ -29,13 +28,12 @@ A third function, `df_check()`, is used internally to ensure that inputs
 are valid data frames.
 
 This vignette demonstrates how to apply these functions using the built-in
-mtcars dataset.
+`mtcars` dataset.
 
 <br>
 
-# The mtcars dataset
-
-mtcars is one of R's built-in datasets. It contains a row names index that indicate's the car's make/model, 11 columns of data, and 32 observations (rows). 
+# The `mtcars` dataset
+`mtcars` is one of R's built-in datasets. It contains a row names index that indicate's the car's make/model, 11 columns of data, and 32 observations (rows). 
 
  Lets view the first few rows:
 ```{r setup}
@@ -46,7 +44,6 @@ We will use this dataset to illustrate the use of the `filter_rows()` and `selec
 <br>
 
 # Filtering rows with `filter_rows()`
-
 The `filter_rows()` function allows users to subset a data frame based on a logical condition.
 The condition is evaluated within the data frame, so column names can be used directly.
 
@@ -82,8 +79,7 @@ This returns only the cars with over 20 mpg AND less than 6 cylinders.
 <br>
 
 # Selecting columns with `select_columns()`
-
-The `select_columns()` function allows users to subset a data frame by providing columns to either include or exclude. Selecting columns by name and index are both supported. 
+The `select_columns()` function allows users to subset a data frame by providing columns to either the `include` or `exclude` arguments. Selecting columns by name and index are both supported. 
 
 The `columns` argument indicates columns to include, whereas the `exclude` argument indicates columns to exclude. `select_columns()` only handles input into either `columns` or `exclude`, not both.
 
@@ -121,7 +117,6 @@ This returns the same columns as example 1, but uses indices to indicate which c
 <br>
 
 # Combining filtering and selecting
-
 Because both functions return a regular data frame, they can be chained (sequentially) using standard R syntax.
 For example:
 ```{r}
@@ -145,16 +140,98 @@ Although not exported, the package uses a helper function called `df_check()` to
 
 <br>
 
+# Comparing to `dplyr`: Correctness and Efficiency
+To demonstrate that the functions in this package behave as intended, the following code compares their results and performance to the equivalent operations in `dplyr`.
+
+Two aspects will be evaluated:
+
+1. Correctness -- ensuring that the outputs match using `all.equal()`
+
+2. Efficiency -- benchmarking speed using `bench::mark()`
+
+For reproducibility, the `mtcars` dataset will be used. 
+
+## Corectness comparison: `filter_rows()` vs `dplyr::filter()`
+We will subset the `mtcars` dataset to include cars that get over 20 mpg
+```{r}
+library(dplyr)
+library(bench)
+
+#Here is the filter_rows() function used in package.nicole.hw4
+my_filter = filter_rows(mtcars, mpg > 20)
+
+#Here is the dplyr::filter() function
+dplyr_filter = dplyr::filter(mtcars, mpg > 20)
+
+#Since dplyr returns a tibble, it must be converted into a data.frame for comparison
+dplyr_filter_df = as.data.frame(dplyr_filter)
+
+#Now we can compare the two
+all.equal(my_filter, dplyr_filter_df)
+```
+
+Since `all.equal()` returns `TRUE`, `filter_rows()` and `dplyr::filter()` produce the same outcome.
+
+<br>
+
+## Correctness comparison: `select_columns` vs `dplyr::select()`
+We will subset the `mtcars` dataset to include three columns: mpg, hp, wt
+```{r}
+#Here is the select_columns() function used in package.nicole.hw4
+my_select = select_columns(mtcars, columns = c("mpg", "hp", "wt"))
+
+#Here is the dplyr::select() function
+dplyr_select = dplyr::select(mtcars, mpg, hp, wt)
+
+#Since dplyr returns a tibble, it must be converted into a data.frame for comparison
+dplyr_select_df = as.data.frame(dplyr_select)
+
+#Now we can compare the two
+all.equal(my_select, dplyr_select_df)
+```
+
+Since `all.equal()` returns `TRUE`, `select_columns()` and `dplyr::select()` produce the same outcome. 
+
+<br>
+
+## Efficiency comparison: `filter_rows()` vs `dplyr::filter()`
+Though base R commands are generally useful, `dplyr` is highly optimized by using C++ code. This benchmarking will give a sense of how `package.nicole.hw4` compares to `dplyr`. 
+```{r}
+bench::mark(
+  my_filter = suppressMessages(filter_rows(mtcars, mpg > 20)),
+  dplyr_filter = dplyr::filter(mtcars, mpg > 20),
+  check = F
+)
+```
+
+In the case of a very small dataset like `mtcars`, the `filter_rows()` function dominates in terms of speed because `filter_rows` is very simple and `dpylr`'s overhead is very large. However, in the case of larger datasets, `dplyr` will outperform `filter_rows()` given its C++ optimization and vectorized operation.  
+
+<br>
+
+## Efficiency comparison: `select_columns` vs `dplyr::select()`
+With the same rationale as above, lets compare the second set of functions.
+```{r}
+bench::mark(
+  my_select = suppressMessages(select_columns(mtcars, columns = c("mpg", "hp", "wt"))),
+  dplyr_select = dplyr::select(mtcars, mpg, hp, wt),
+  check = F
+  )
+```
+
+Similar to the above example in terms of speed and memory, `select_columns` outperforms `dplyr` on this very small dataset, though `dplyr` would perform better on larger datasets.
+
+<br>
+
 # Summary
 
-The package.nicole.hw4 package provides:
+The `package.nicole.hw4` package provides:
 
  - A simple and intuitive row filtering function: `filter_rows()`
  
  - A flexible column inclusion/exclusion function: `select_columns()`
  
- - Validation of input data and clean error handling through `df_check`
+ - Validation of input data and clean error handling through `df_check()`
  
  
-These functions mimic the basic features of `dplyr` but are built in base R -- keeping them simple, lightweight, and easy to understand. package.nicole.hw4 is a useful tool for manipulating data intuitively. Happy data manipulating!
+These functions mimic the basic features of `dplyr` but are built in base R -- keeping them simple, lightweight, and easy to understand. The package works best on small datasets, whereas `dplyr` is optimized for very large data. In sum, `package.nicole.hw4` is a useful tool for manipulating data small datasets intuitively. Happy data manipulation! :)
  

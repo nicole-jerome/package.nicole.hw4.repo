@@ -17,8 +17,8 @@ This function makes sure that the input into the function is a data.frame. If no
 }
 \examples{
 \dontrun{
-check_dataframe(mtcars)   # passes
-check_dataframe(1:10)     # throws an error
+df_check(mtcars)   # passes
+df_check(1:10)     # throws an error
 }
 }
 \keyword{internal}

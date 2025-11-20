@@ -6,8 +6,8 @@
 #' @return Invisibly returns TRUE if the input is a valid data.frame.
 #' @keywords internal
 #' @examples
-#' df_check(mtcars)   # passes
 #' \dontrun{
+#' df_check(mtcars)   # passes
 #' df_check(1:10)     # throws an error
 #' }
 df_check = function(df) {
